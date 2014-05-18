@@ -417,6 +417,44 @@ function setupUI() {
 	jQuery("#try-again button").html(escHtml(translate("_try_again")));
 }
 
+function setupIntro() {
+	if (typeof(window['intro']) == "undefined") {
+		return;
+	}
+	if (!Array.isArray(intro)) {
+		intro = [intro];
+	}
+	if (intro.length == 0) {
+		return false;
+	}
+	var html = "";
+	for (var i = 0; i < intro.length; i++) {
+		var step = intro[i];
+		if ('story' in step) {
+			if (Array.isArray(step['story'])) {
+				for (var j = 0; j < step['story'].length; j++) {
+					html += "<p>" + escHtml(step['story'][j]) + "</p>";
+				}
+			} else {
+				html += "<p>" + escHtml(step['story']) + "</p>";
+			}
+		}
+		if ('picture' in step) {
+			html += "<div class=\"intro-picture\">";
+			if ('big_picture' in step) {
+				html += "<a href=\"./games/" + escUrl(game) + "/" + escUrl(step['big_picture']) + "\">";
+			}
+			html += "<img src=\"./games/" + escUrl(game) + "/" + escUrl(step['picture']) + "\" />";
+			if ('big_picture' in step) {
+				html += "</a>";
+			}
+			html += "</div>";
+		}
+	}
+	jQuery("#intro-screen").prepend(html);
+	return true;
+}
+
 function setupActions() {
 	for (var i = 0; i < actions.length; i++) {
 		jQuery("#actions ul").append("<li onclick=\"javascript:actionPicked('" + escJs(actions[i]['code']) + "');\"))>" + escHtml(translate(actions[i]['code'])) + "</li>");
@@ -442,8 +480,13 @@ function setupObjects() {
 	}
 }
 
-// Ending functions
-///////////////////
+// Starting/ending functions
+////////////////////////////
+
+function start() {
+	jQuery("#intro-screen").hide();
+	jQuery("#game-screen").show();
+}
 
 /** Init and show a game over screen by bad_ends index */
 function game_over(end_index) {
@@ -489,6 +532,10 @@ jQuery().ready(function() {
 	loadI18n();
 	loadAltI18n(_get("lang"));
 	setupUI();
+	if (setupIntro()) {
+		jQuery("#game-screen").hide();
+		jQuery("#intro-screen").show();
+	}
 	setupActions();
 	setupLocations();
 	setupInventory();
