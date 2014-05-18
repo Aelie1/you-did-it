@@ -27,20 +27,15 @@ body {
 	height: 100%;
 }
 
-#error-screen {
-	display: none;
-}
-
-#intro-screen {
+#error-screen,
+#intro-screen,
+#game-over-screen,
+#game-end-screen {
 	display: none;
 }
 
 #game-screen {
 	display: block;
-}
-
-#game-over-screen {
-	display: none;
 }
 
 #main {
