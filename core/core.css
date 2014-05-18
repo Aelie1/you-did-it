@@ -1,3 +1,18 @@
+/* You DID it!
+ * 
+ * This file is part of You DID it!
+ * 
+ * You DID it! is licenced under public domain and or CC-0
+ * See http://creativecommons.org/publicdomain/zero/1.0/
+ * 
+ * You DID it! uses jQuery, licenced by the jQuery Fundation
+ * under the MIT Licence (see https://jquery.org/license/)
+ * 
+ * Please notice that only the game engine is in public domain.
+ * Game data (pictures, stories, texts and more) are subject to their
+ * own licence which may differ.
+ */
+
 /* This is the core structure css file. It defines the general structure
  * of the page and should be shared among games without editing.
  */
