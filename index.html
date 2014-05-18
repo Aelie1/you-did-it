@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Escape game 01</title>
+		<script type="text/javascript" src="./core/jquery-2.1.1.min.js"></script>
+		<link rel="stylesheet" type="text/css" media="all" href="./core/core.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="./game/game.css" />
+		<script type="text/javascript" src="./core/engine.js"></script>
+	</head>
+	<body>
+		<div id="error-screen"></div>
+		<div id="game-screen">
+			<div id="main">
+				<div id="picture">
+					<a href="#" target="_new"><img/></a>
+				</div>
+				<div id="map">
+					<img usemap="#map"/>
+					<map name="map"/>
+				</div>
+				<div id="situation">
+				</div>
+				<div id="result" class="result-hidden" onclick="javascript:closeResult();">
+				</div>
+			</div>
+			<div id="action-bar" style="background-color:#555">
+				<div id="items">
+					<div id="inventory">
+						<div class="title">Body parts/Bindings</div>
+						<ul>
+						</ul>
+					</div>
+					<div id="objects">
+						<div class="title">Objects</div>
+						<ul>
+						</ul>
+					</div>
+				</div>
+				<div id="notification">
+					<div class="title"></div>
+				</div>
+				<div id="actions">
+					<ul>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div id="game-over-screen">
+			<div id="game-over-situation">
+			</div>
+			<div id="game-over-picture">
+				<a href="#" target="_new"><img /></a>
+			</div>
+			<div id="try-again">
+				<button onclick="javascript:retry()">Try again</button>
+			</div>
+		</div>
+		<div id="game-end-screen">
+			<div id="game-end-situation">
+			</div>
+			<div id="game-end-picture">
+				<a href="#" target="_new"><img /></a>
+			</div>
+		</div>
+		<div id="disclaimer">
+			<p>Powered by <a href="#">You DID it!</a></p>
+		</div>
+	</body>
+</html>
