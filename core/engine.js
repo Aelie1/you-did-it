@@ -394,6 +394,9 @@ function loadGame() {
 }
 
 function loadI18n() {
+	for (var key in default_core_language) {
+		i18n[key] = default_core_language[key];
+	}
 	for (var key in default_language) {
 		i18n[key] = default_language[key];
 	}
@@ -402,9 +405,15 @@ function loadAltI18n(lang) {
 	if (lang == null) {
 		return;
 	}
+	jQuery("head").append("<script type=\"text/javascript\" src=\"./core/language-" + escUrl(lang) + ".js\"></script>");
 	jQuery("head").append("<script type=\"text/javascript\" src=\"./games/" + escUrl(game) + "/language-" + escUrl(lang) + ".js\"></script>");
 	if (typeof(window['language']) == "undefined") {
 		return;
+	}
+	if (typeof(window['core_language']) != "undefined") {
+		for (var key in core_language) {
+			i18n[key] = core_language[key];
+		}
 	}
 	for (var key in language) {
 		i18n[key] = language[key];
@@ -414,6 +423,7 @@ function loadAltI18n(lang) {
 function setupUI() {
 	jQuery("#inventory .title").html(escHtml(translate("_inventory")));
 	jQuery("#objects .title").html(escHtml(translate("_objects")));
+	jQuery("#start-game button").html(escHtml(translate("_start_game")));
 	jQuery("#try-again button").html(escHtml(translate("_try_again")));
 }
 
