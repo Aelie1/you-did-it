@@ -21,6 +21,12 @@ var inventory = {};
 var objects = [];
 var current_state_index = 0;
 var current_state = null;
+/** Number of bad actions to suggest before showing hints.
+ * Must be ordered. May be overriden in game data. */
+var hintThresholds = [5, 10, 15, 20, 25];
+/** Counts the number of useless actions to display hints */
+var badActions = 0;
+var hintsShown = 0;
 
 var action_state = null;
 var PICK_ACTION = 0;
@@ -77,8 +83,12 @@ function escAttr(string) {
 function escUrl(string) {
 	return string;
 }
+/** Escape string to include it in javascript code, surrounded by ' '
+ * and by " " for html element. */
 function escJs(string) {
-	return string;
+	var esc = string.replace(new RegExp("'", 'g'), "\\'");
+	esc = esc.replace(new RegExp("\"", 'g'), "&quot;");
+	return esc;
 }
 
 function translate(string, array) {
@@ -278,10 +288,13 @@ function proceedAction(action) {
 	// If no transition show default result
 	if (action == null) {
 		showTextResult(translate("_you_cant_do_that"));
+		badAction();
 		return;
 	}
 	// Proceed transition if any
-	proceedResult(action['result']);
+	if (!proceedResult(action['result'])) {
+		badAction();
+	}
 }
 
 /** Get action from map and proceed it's result. Called on map click. */
@@ -296,8 +309,10 @@ function proceedMapResult(index) {
 	updateNotification();
 }
 
-/** Parse and proceed a result object */
+/** Parse and proceed a result object. Returns true if it makes
+ * the game progress. */
 function proceedResult(result) {
+	var progressed = false;
 	if ('text' in result) {
 		showTextResult(result['text']);
 	}
@@ -305,6 +320,7 @@ function proceedResult(result) {
 		if (result['move_to'] == 'next') {
 			setState(current_state_index + 1);
 		}
+		progressed = true;
 	}
 	if ('item' in result) {
 		if (Array.isArray(result['item'])) {
@@ -314,11 +330,13 @@ function proceedResult(result) {
 		} else {
 			addObject(result['item']);
 		}
+		progressed = true;
 	}
 	if ('inventory' in result) {
 		for (var loc in result['inventory']) {
 			setItem(loc, result['inventory'][loc]);
 		}
+		progressed = true;
 	}
 	if ('remove_inventory' in result) {
 		if (Array.isArray(result['remove_inventory'])) {
@@ -330,13 +348,49 @@ function proceedResult(result) {
 			var rem = result['remove_inventory'];
 			removeItem(rem['location'], rem['item']);
 		}
+		progressed = true;
 	}
 	if ('game_over' in result) {
 		game_over(result['game_over']);
+		progressed = true;
 	}
 	if ('congratulations' in result) {
 		game_end(result['congratulations']);
+		progressed = true;
 	}
+	return progressed;
+}
+
+// Hints management
+///////////////////
+
+/** Incremend the bad action count and check
+ * if a hint should be shown */
+function badAction() {
+	badActions++;
+	// Check if a threshold is reached (or even multiple)
+	while (hintThresholds.length > hintsShown
+			&& hintThresholds[hintsShown] <= badActions) {
+		showNextHint();
+	}
+}
+
+function showNextHint() {
+	if ('hints' in current_state
+			&& current_state['hints'].length > hintsShown) {
+		var hint = current_state['hints'][hintsShown];
+		var html = "<li onclick=\"javascript:showResult('" + escJs(translate(hint)) + "');\">" + escHtml(translate("_hint_{0}", [hintsShown + 1])) + "</li>";
+		jQuery("#hints").append(html);
+	}
+	hintsShown++;
+}
+
+function resetHints() {
+	// Hide hints
+	jQuery("#hints").html("");
+	// Reset counters
+	badActions = 0;
+	hintsShown = 0;
 }
 
 // State function
@@ -348,6 +402,7 @@ function setState(index) {
 	setStatePicture(current_state);
 	setStory(current_state);
 	setMap(current_state);
+	resetHints();
 	action_state = PICK_ACTION;
 	updateNotification();
 }

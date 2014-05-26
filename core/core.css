@@ -62,6 +62,16 @@ body {
 	padding-left: 1ex;
 }
 
+#hints {
+	clear: right;
+	float: right;
+	margin-right: 3em;
+	list-style-type: none;
+}
+#hints li {
+	cursor: pointer;
+}
+
 #result {
 	right: 20%;
 	top: 10ex;

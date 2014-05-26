@@ -8,6 +8,7 @@ var default_core_language = {
 	'_pick_target_1_of_2': "{0} {1} with",
 	'_pick_target_2_completed': "{0} {1} with {2}",
 	'_you_cant_do_that': "You can't do that!",
+	'_hint_{0}': "Hint {0}",
 	'_click_to_close': "(click to close)",
 	'_start_game': "Let's start!",
 	'_try_again': "Try again",

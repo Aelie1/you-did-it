@@ -8,6 +8,7 @@ var core_language = {
 	'_pick_target_1_of_2': "{0} {1} avec",
 	'_pick_target_2_completed': "{0} {1} avec {2}",
 	'_you_cant_do_that': "Vous ne pouvez pas faire ceci !",
+	'_hint_{0}': "Indice {0}",
 	'_click_to_close': "(cliquer pour fermer)",
 	'_start_game': "C'est parti!",
 	'_try_again': "Réessayer",
