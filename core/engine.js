@@ -64,6 +64,10 @@ function _get( name )
     return results[1];
 }
 
+function isDefined(varName) {
+	return typeof(window[varName]) != "undefined";
+}
+
 function escHtml(string) {
 	return string;
 }
@@ -386,7 +390,7 @@ function loadGame() {
 	jQuery("head").append("<script type=\"text/javascript\" src=\"./games/" + escUrl(game) + "/language.js\"></script>");
 	jQuery("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"./games/" + escUrl(game) + "/game.css\"/>");
 	// Check for game data
-	if (typeof(window['states']) == "undefined") {
+	if (!isDefined('states')) {
 		return false;
 	}
 	// Ok
@@ -407,10 +411,10 @@ function loadAltI18n(lang) {
 	}
 	jQuery("head").append("<script type=\"text/javascript\" src=\"./core/language-" + escUrl(lang) + ".js\"></script>");
 	jQuery("head").append("<script type=\"text/javascript\" src=\"./games/" + escUrl(game) + "/language-" + escUrl(lang) + ".js\"></script>");
-	if (typeof(window['language']) == "undefined") {
+	if (!isDefined('language')) {
 		return;
 	}
-	if (typeof(window['core_language']) != "undefined") {
+	if (isDefined('core_language')) {
 		for (var key in core_language) {
 			i18n[key] = core_language[key];
 		}
@@ -428,7 +432,7 @@ function setupUI() {
 }
 
 function setupIntro() {
-	if (typeof(window['intro']) == "undefined") {
+	if (!isDefined('intro')) {
 		return;
 	}
 	if (!Array.isArray(intro)) {
