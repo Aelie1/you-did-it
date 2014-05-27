@@ -398,7 +398,8 @@ function showNextHint() {
 	if ('hints' in current_state
 			&& current_state['hints'].length > hintsShown) {
 		var hint = current_state['hints'][hintsShown];
-		var html = "<li onclick=\"javascript:showResult('" + escJs(translate(hint)) + "');\">" + escHtml(translate("_hint_{0}", [hintsShown + 1])) + "</li>";
+		var hintTitle = translate("_hint_{0}", [hintsShown + 1])
+		var html = "<li onclick=\"javascript:showResult('" + escJs(translate(hint)) + "', '" + escJs(hintTitle) + "');\">" + escHtml(hintTitle) + "</li>";
 		jQuery("#hints").append(html);
 	}
 	hintsShown++;
