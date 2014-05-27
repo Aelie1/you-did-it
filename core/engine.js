@@ -182,6 +182,15 @@ function addObject(item) {
 	// Display
 	jQuery("#objects ul").append("<li id=\"object-" + escAttr(item) + "\" onclick=\"javascript:targetPicked('" + escJs(item) + "');\">" + escHtml(translate(item)) + "</li>");
 }
+function removeObject(item) {
+	for (var i = 0; i < objects.length; i++) {
+		if (objects[i] == item) {
+			jQuery("#object-" + escAttr(item)).remove();
+			objects.splice(i, 1);
+			return;
+		}
+	}
+}
 
 /** Clicked on an action, if action is not already picked pick it
  * and expect a target. Otherwise reset action picking with new one. */
@@ -329,6 +338,16 @@ function proceedResult(result) {
 			}
 		} else {
 			addObject(result['item']);
+		}
+		progressed = true;
+	}
+	if ('remove_item' in result) {
+		if (Array.isArray(result['remove_item'])) {
+			for (var i = 0; i < result['remove_item'].length; i++) {
+				removeObject(result['remove_item'][i]);
+			}
+		} else {
+			removeObject(result['remove_item']);
 		}
 		progressed = true;
 	}
