@@ -115,6 +115,13 @@ function showTextResult(textResult) {
 		for (var i = 0; i < targets_picked.length; i++) {
 			i18n_args.push(targets_picked[i]);
 		}
+		// Look for alternate linker word in picked action
+		if ('linker' in action_picked) {
+			i18n_args.push(translate(action_picked['linker']));
+		} else {
+			// Put default linker word
+			i18n_args.push(translate('_pick_target_linker'));
+		}
 		title = translate(i18n, i18n_args);
 	}
 	showResult(textResult, title);
@@ -281,6 +288,13 @@ function updateNotification() {
 		i18n_args.push(translate(action_picked['code']));
 		for (var i = 0; i < targets_picked.length; i++) {
 			i18n_args.push(translate(targets_picked[i]));
+		}
+		// Look for alternate linker word in picked action
+		if ('linker' in action_picked) {
+			i18n_args.push(translate(action_picked['linker']));
+		} else {
+			// Put default linker word
+			i18n_args.push(translate('_pick_target_linker'));
 		}
 		html = translate(i18n, i18n_args);
 		jQuery("#notification div").html(html);
