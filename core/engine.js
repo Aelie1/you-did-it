@@ -536,10 +536,10 @@ function setupIntro() {
 		if ('story' in step) {
 			if (Array.isArray(step['story'])) {
 				for (var j = 0; j < step['story'].length; j++) {
-					html += "<p>" + escHtml(step['story'][j]) + "</p>";
+					html += "<p>" + escHtml(translate(step['story'][j])) + "</p>";
 				}
 			} else {
-				html += "<p>" + escHtml(step['story']) + "</p>";
+				html += "<p>" + escHtml(translate(step['story'])) + "</p>";
 			}
 		}
 		if ('picture' in step) {
