@@ -117,6 +117,13 @@ body {
 	vertical-align: top;
 }
 
+#footer {
+	text-align: left;
+	font-style: italic;
+	font-size: xx-small;
+	float:left;
+	margin-left: 1ex;
+}
 #disclaimer {
 	text-align: right;
 	font-style: italic;

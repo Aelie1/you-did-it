@@ -523,6 +523,10 @@ function setupUI() {
 	if (isDefined('title')) {
 		jQuery("title").html(escHtml(translate(title)));
 	}
+	// Set game footer (can contain html)
+	if (isDefined('footer')) {
+		jQuery("#footer").html(translate(footer));
+	}
 }
 
 function setupIntro() {
