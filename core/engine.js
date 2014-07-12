@@ -372,14 +372,8 @@ function proceedResult(result) {
 		progressed = true;
 	}
 	if ('remove_inventory' in result) {
-		if (Array.isArray(result['remove_inventory'])) {
-			for (var i = 0; i < result['remove_inventory'].length; i++) {
-				var rem = result['remove_inventory'][i];
-				removeItem(rem['location'], rem['item']);
-			}
-		} else {
-			var rem = result['remove_inventory'];
-			removeItem(rem['location'], rem['item']);
+		for (var loc in result['remove_inventory']) {
+			removeItem(loc, result['remove_inventory'][loc]);
 		}
 		progressed = true;
 	}
