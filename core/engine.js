@@ -514,10 +514,15 @@ function loadAltI18n(lang) {
 }
 
 function setupUI() {
+	// Translate UI labels
 	jQuery("#inventory .title").html(escHtml(translate("_inventory")));
 	jQuery("#objects .title").html(escHtml(translate("_objects")));
 	jQuery("#start-game button").html(escHtml(translate("_start_game")));
 	jQuery("#try-again button").html(escHtml(translate("_try_again")));
+	// Set game title
+	if (isDefined('title')) {
+		jQuery("title").html(escHtml(translate(title)));
+	}
 }
 
 function setupIntro() {
