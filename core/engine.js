@@ -31,6 +31,7 @@ var hintsShown = 0;
 var action_state = null;
 var PICK_ACTION = 0;
 var PICK_TARGET = 1;
+var WILDCARD = "*";
 
 var action_picked = null;
 var ACTION_MAP = "_map_item_clicked";
@@ -244,10 +245,11 @@ function targetPicked(target_code) {
 			if (action.length != selected_action.length) {
 				continue;
 			}
-			// Check if the action is the same and assign it
+			// Check if the action is the same or wildcard and assign it
 			var ok = 1;
 			for (var j = 0; j < selected_action.length; j++) {
-				if (selected_action[j] != action[j]) {
+				if (selected_action[j] != action[j]
+						&& action[j] != WILDCARD) {
 					ok = 0;
 					break;
 				}
