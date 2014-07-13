@@ -129,7 +129,11 @@ function showTextResult(textResult) {
 }
 
 /** Show result popup with message and optionnal title */
-function showResult(string, title = null) {
+function showResult(string, title) {
+	switch (arguments.length) {
+	case 1:
+		title = null;
+	}
 	var result = null;
 	if (Array.isArray(string)) {
 		result = "";
