@@ -444,8 +444,14 @@ function setState(index) {
 }
 
 function setStatePicture(state) {
-	jQuery("#picture a").attr("href", "./games/" + escUrl(game) + "/" + escUrl(state['big_picture']));
-	jQuery("#picture img").attr("src", "./games/" + escUrl(game) + "/" + escUrl(state['picture']));
+	if ('picture' in state) {
+		if ('big_picture' in state) {
+			jQuery("#picture a").attr("href", "./games/" + escUrl(game) + "/" + escUrl(state['big_picture']));
+		} else {
+			jQuery("#picture a").attr("href", "./games/" + escUrl(game) + "/" + escUrl(state['picture']));
+		}
+		jQuery("#picture img").attr("src", "./games/" + escUrl(game) + "/" + escUrl(state['picture']));
+	}
 }
 
 function setStory(state) {
@@ -606,8 +612,14 @@ function start() {
 function game_over(end_index) {
 	jQuery("#game-screen").hide();
 	var state = bad_ends[end_index];
-	jQuery("#game-over-picture a").attr("href", "./games/" + escUrl(game) + "/" + escUrl(state['big_picture']));
-	jQuery("#game-over-picture img").attr("src", "./games/" + escUrl(game) + "/" + escUrl(state['picture']));
+	if ('picture' in state) {
+		if ('big_picture' in state) {
+			jQuery("#game-over-picture a").attr("href", "./games/" + escUrl(game) + "/" + escUrl(state['big_picture']));
+		} else {
+			jQuery("#game-over-picture a").attr("href", "./games/" + escUrl(game) + "/" + escUrl(state['picture']));
+		}
+		jQuery("#game-over-picture img").attr("src", "./games/" + escUrl(game) + "/" + escUrl(state['picture']));
+	}
 	lines = state['story']
 	jQuery("#game-over-situation").html("");
 	for (var i = 0; i < lines.length; i++) {
@@ -626,8 +638,14 @@ function retry() {
 function game_end(end_index) {
 	jQuery("#game-screen").hide();
 	var state = good_ends[end_index];
-	jQuery("#game-end-picture a").attr("href", "./games/" + escUrl(game) + "/" + escUrl(state['big_picture']));
-	jQuery("#game-end-picture img").attr("src", "./games/" + escUrl(game) + "/" + escUrl(state['picture']));
+	if ('picture' in state) {
+		if ('big_picture' in state) {
+			jQuery("#game-end-picture a").attr("href", "./games/" + escUrl(game) + "/" + escUrl(state['big_picture']));
+		} else {
+			jQuery("#game-end-picture a").attr("href", "./games/" + escUrl(game) + "/" + escUrl(state['picture']));
+		}
+		jQuery("#game-end-picture img").attr("src", "./games/" + escUrl(game) + "/" + escUrl(state['picture']));
+	}
 	lines = state['story']
 	jQuery("#game-end-situation").html("");
 	for (var i = 0; i < lines.length; i++) {
