@@ -348,7 +348,9 @@ function proceedResult(result) {
 	if ('move_to' in result) {
 		if (result['move_to'] == 'next') {
 			setState(current_state_index + 1);
-		}
+		} else {
+			setState(result['move_to']);
+		}		
 		progressed = true;
 	}
 	if ('item' in result) {
