@@ -409,7 +409,7 @@ function proceedAction(action) {
 		return;
 	}
 	// Proceed transition if any
-	if (!proceedResult(action['result'])) {
+	if (!proceedResult(action['result']) && action_picked['no_hints'] !== true) {
 		badAction();
 	}
 }
