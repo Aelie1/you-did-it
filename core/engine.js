@@ -183,6 +183,13 @@ function removeItem(location, item) {
 	
 }
 
+function hasItem(location, item) {
+	if (location in inventory && inventory[location] == item) {
+		return true;
+	}
+	return false;
+}
+
 function addObject(item) {
 	// Add object if not already in list
 	for (var i = 0; i < objects.length; i++) {
@@ -202,6 +209,15 @@ function removeObject(item) {
 			return;
 		}
 	}
+}
+
+function hasObject(item) {
+	for (var i = 0; i < objects.length; i++) {
+		if (objects[i] == item) {
+			return true;
+		}
+	}
+	return false;
 }
 
 /** Clicked on an action, if action is not already picked pick it
@@ -308,6 +324,53 @@ function updateNotification() {
 	}
 }
 
+/** Process a set of conditions using either 'and' or 'or' logic. **/
+function processConditions(conditions, type) {
+	if ('has_item' in conditions) {
+		if (Array.isArray(conditions['has_item'])) {
+			for (var i = 0; i < conditions['has_item'].length; i++) {
+				if (hasObject(conditions['has_item'][i])) {
+					if (type == 'or') {
+						return true;
+					}
+				} else {
+					if (type == 'and') {
+						return false;
+					}
+				}
+			}
+		} else {
+			if (hasObject(conditions['has_item'])) {
+				if (type == 'or') {
+					return true;
+				}
+			} else {
+				if (type == 'and') {
+					return false;
+				}
+			}
+		}
+	}
+	if ('has_inventory' in conditions) {
+		for (var loc in conditions['has_inventory']) {
+			if (hasItem(loc, conditions['has_inventory'][loc])) {
+				if (type == 'or') {
+					return true;
+				}
+			} else {
+				if (type == 'and') {
+					return false;
+				}
+			}
+		}
+	}
+	if (type == 'or') {
+		return false;
+	} else {
+		return true;
+	}
+}	
+
 /** Proceed an action result. If null show default impossible action. */
 function proceedAction(action) {
 	// Reset action command and update
@@ -342,6 +405,25 @@ function proceedMapResult(index) {
  * the game progress. */
 function proceedResult(result) {
 	var progressed = false;
+	if ('if' in result) {
+		var type = 'none';
+		if ('and' in result['if']) {
+			type = 'and';
+		} else if ('or' in result['if']) {
+			type = 'or';
+		}
+		if (type !== 'none') {
+			if (processConditions(result['if'][type],type)) {
+				if (proceedResult(result['if']['then'])) {
+					progressed = true;
+				}
+			} else {
+				if (proceedResult(result['if']['else'])) {
+					progressed = true;
+				}
+			}
+		}
+	}
 	if ('text' in result) {
 		showTextResult(result['text']);
 	}
