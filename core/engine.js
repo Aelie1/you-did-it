@@ -378,6 +378,17 @@ function processConditions(conditions, type) {
 			}
 		}
 	}
+	if ('random' in conditions) {
+			if (Math.random() * 100 < conditions['random']) {
+				if (type == 'or') {
+					return true;
+				}
+			} else {
+				if (type == 'and') {
+					return false;
+				}
+			}
+	}
 	if (type == 'or') {
 		return false;
 	} else {
