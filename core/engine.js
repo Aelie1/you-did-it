@@ -19,6 +19,7 @@ var game;
 var i18n = {};
 var inventory = {};
 var objects = [];
+var flags = {};
 var current_state_index = 0;
 var current_state = null;
 /** Number of bad actions to suggest before showing hints.
@@ -364,6 +365,19 @@ function processConditions(conditions, type) {
 			}
 		}
 	}
+	if ('check' in conditions) {
+		for (var variable in conditions['check']) {
+			if (flags[variable] == conditions['check'][variable]) {
+				if (type == 'or') {
+					return true;
+				}
+			} else {
+				if (type == 'and') {
+					return false;
+				}
+			}
+		}
+	}
 	if (type == 'or') {
 		return false;
 	} else {
@@ -464,6 +478,12 @@ function proceedResult(result) {
 	if ('remove_inventory' in result) {
 		for (var loc in result['remove_inventory']) {
 			removeItem(loc, result['remove_inventory'][loc]);
+		}
+		progressed = true;
+	}
+	if ('set' in result) {
+		for (var variable in result['set']) {
+			flags[variable]= result['set'][variable];
 		}
 		progressed = true;
 	}
