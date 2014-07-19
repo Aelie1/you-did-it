@@ -499,6 +499,8 @@ function proceedResult(result) {
 		progressed = true;
 	}
 	if ('game_over' in result) {
+		badAction();
+		badAction();
 		game_over(result['game_over']);
 		progressed = true;
 	}
