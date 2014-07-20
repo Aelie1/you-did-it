@@ -508,8 +508,6 @@ function proceedResult(result) {
 		progressed = true;
 	}
 	if ('game_over' in result) {
-		badAction();
-		badAction();
 		game_over(result['game_over']);
 		progressed = true;
 	}
@@ -755,6 +753,13 @@ function start() {
 function game_over(end_index) {
 	jQuery("#game-screen").hide();
 	var state = bad_ends[end_index];
+	// Handle hint count
+	if ('hint_count' in state) {
+		badAction(state['hint_count']);
+	} else {
+		badAction();
+	}
+	// Set picture if any
 	if ('picture' in state) {
 		var html = null;
 		var pictHtml = "<img src=\"./games/" + escUrl(game) + "/" + escUrl(state['picture']) + "\" />";
@@ -770,6 +775,7 @@ function game_over(end_index) {
 		// No picture available. Hide it.
 		jQuery("#game-over-picture").hide();
 	}
+	// Set story and show the whole
 	lines = state['story']
 	jQuery("#game-over-situation").html("");
 	for (var i = 0; i < lines.length; i++) {
