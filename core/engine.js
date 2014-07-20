@@ -399,18 +399,27 @@ function processConditions(conditions, type) {
 /** Proceed an action result. If null show default impossible action. */
 function proceedAction(action) {
 	// Reset action command and update
+	// (action_picked still holds the latest action)
 	action_state = PICK_ACTION;
 	target_picked = [];
 	updateNotification();
 	// If no transition show default result
 	if (action == null) {
 		showTextResult(translate("_you_cant_do_that"));
-		badAction();
+		if ('hint_count' in action_picked) {
+			badAction(action_picked['hint_count']);
+		} else {
+			badAction();
+		}
 		return;
 	}
 	// Proceed transition if any
-	if (!proceedResult(action['result']) && action_picked['no_hints'] !== true) {
-		badAction();
+	if (!proceedResult(action['result'])) {
+		if ('hint_count' in action_picked) {
+			badAction(action_picked['hint_count']);
+		} else {
+			badAction();
+		}
 	}
 }
 
@@ -515,9 +524,15 @@ function proceedResult(result) {
 ///////////////////
 
 /** Incremend the bad action count and check
- * if a hint should be shown */
-function badAction() {
-	badActions++;
+ * if a hint should be shown.
+ * @param hintCount (optional integer) increment the action count
+ * to show hints. Default 1. */
+function badAction(hintCount) {
+	switch (arguments.length) {
+	case 0:
+		hintCount = 1;
+	}
+	badActions += hintCount;
 	// Check if a threshold is reached (or even multiple)
 	while (hintThresholds.length > hintsShown
 			&& hintThresholds[hintsShown] <= badActions) {
