@@ -560,12 +560,25 @@ function setState(index) {
 
 function setStatePicture(state) {
 	if ('picture' in state) {
+		var html = null;
+		var pictHtml = "<img src=\"./games/" + escUrl(game) + "/" + escUrl(state['picture']) + "\" />";
+		// If big picture available, link to it on click
 		if ('big_picture' in state) {
-			jQuery("#picture a").attr("href", "./games/" + escUrl(game) + "/" + escUrl(state['big_picture']));
+			html = "<a href=\"./games/" + escUrl(game) + "/" + escUrl(state['big_picture']) + "\">" + pictHtml + "</a>";
 		} else {
-			jQuery("#picture a").attr("href", "./games/" + escUrl(game) + "/" + escUrl(state['picture']));
+			html = pictHtml;
 		}
-		jQuery("#picture img").attr("src", "./games/" + escUrl(game) + "/" + escUrl(state['picture']));
+		jQuery("#picture").html(html);
+		jQuery("#picture").show();
+	} else {
+		// No picture available. Check for default or hide it.
+		if (isDefined('default_picture')) {
+			html = "<img src=\"./games/" + escUrl(game) + "/" + escUrl(default_picture) + "\" />";
+			jQuery("#picture").html(html);
+			jQuery("#picture").show();
+		} else {
+			jQuery("#picture").hide();
+		}
 	}
 }
 
@@ -728,12 +741,19 @@ function game_over(end_index) {
 	jQuery("#game-screen").hide();
 	var state = bad_ends[end_index];
 	if ('picture' in state) {
+		var html = null;
+		var pictHtml = "<img src=\"./games/" + escUrl(game) + "/" + escUrl(state['picture']) + "\" />";
+		// If big picture available, link to it on click
 		if ('big_picture' in state) {
-			jQuery("#game-over-picture a").attr("href", "./games/" + escUrl(game) + "/" + escUrl(state['big_picture']));
+			html = "<a href=\"./games/" + escUrl(game) + "/" + escUrl(state['big_picture']) + "\">" + pictHtml + "</a>";
 		} else {
-			jQuery("#game-over-picture a").attr("href", "./games/" + escUrl(game) + "/" + escUrl(state['picture']));
+			html = pictHtml;
 		}
-		jQuery("#game-over-picture img").attr("src", "./games/" + escUrl(game) + "/" + escUrl(state['picture']));
+		jQuery("#game-over-picture").html(html);
+		jQuery("#game-over-picture").show();
+	} else {
+		// No picture available. Hide it.
+		jQuery("#game-over-picture").hide();
 	}
 	lines = state['story']
 	jQuery("#game-over-situation").html("");
@@ -754,12 +774,19 @@ function game_end(end_index) {
 	jQuery("#game-screen").hide();
 	var state = good_ends[end_index];
 	if ('picture' in state) {
+		var html = null;
+		var pictHtml = "<img src=\"./games/" + escUrl(game) + "/" + escUrl(state['picture']) + "\" />";
+		// If big picture available, link to it on click
 		if ('big_picture' in state) {
-			jQuery("#game-end-picture a").attr("href", "./games/" + escUrl(game) + "/" + escUrl(state['big_picture']));
+			html = "<a href=\"./games/" + escUrl(game) + "/" + escUrl(state['big_picture']) + "\">" + pictHtml + "</a>";
 		} else {
-			jQuery("#game-end-picture a").attr("href", "./games/" + escUrl(game) + "/" + escUrl(state['picture']));
+			html = pictHtml;
 		}
-		jQuery("#game-end-picture img").attr("src", "./games/" + escUrl(game) + "/" + escUrl(state['picture']));
+		jQuery("#game-end-picture").html(html);
+		jQuery("#game-end-picture").show();
+	} else {
+		// No picture available. Hide it.
+		jQuery("#game-end-picture").hide();
 	}
 	lines = state['story']
 	jQuery("#game-end-situation").html("");

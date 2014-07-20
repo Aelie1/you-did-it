@@ -45,7 +45,8 @@ body {
 #picture {
 	float: left;
 }
-#picture a {
+#picture > a,
+#picture > img {
 	display: block;
 	padding-right: 1ex;
 	line-height: 0px;
