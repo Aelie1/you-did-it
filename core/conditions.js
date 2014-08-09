@@ -19,8 +19,6 @@
 // Step2: parser for is in, is not in
 // Step3: recursive parser for parenthesis
 
-var cnd_stack = [];
-
 var CND_OR = "or";
 var CND_AND = "and";
 var CND_IN = "is in";
@@ -34,18 +32,30 @@ var CND_ITEMS = "items";
  * @return True if conditions are met, false otherwise,
  * null in case of syntax error. */
 function cnd_processIf(data) {
-	cnd_stack = [];
+	var stack = []
 	for (var i = 0; i < data.length; i++) {
 		// Add a new element on stack and (re)parse
-		cnd_stack.push(data[i]);
-		while (proceedStack() != false) {
+		if (Array.isArray(data[i])) {
+			// Process the subdata and add them
+			var result = cnd_processIf(data[i]);
+			if (result != null) {
+				stack.push(result);
+			} else {
+				// Syntax error
+				return null;
+			}
+		} else {
+			// Add an element to stack to process
+			stack.push(data[i]);
+		}
+		while (proceedStack(stack) != false) {
 			// Loop on proceedStack until it stops
 		}
 	}
 	// Everything is parsed, check if the result is there
-	if (cnd_stack.length == 1) {
-		if (cnd_stack[0] == true || cnd_stack[0] == false) {
-			return cnd_stack[0];
+	if (stack.length == 1) {
+		if (stack[0] == true || stack[0] == false) {
+			return stack[0];
 		}
 	}
 	// Some elements can't be parsed, it's a syntax error
@@ -59,20 +69,21 @@ function cnd_isKeyword(element) {
 }
 
 /** Try to read the stack and convert a known expression to a boolean.
+ * @param stack The array of elements to proceed.
  * @return True if an expression was found and converted in stack,
  * false if nothing changed. */
-function proceedStack() {
+function proceedStack(stack) {
 	// Read by chunk of three from the end and try to merge
 	// This works only if all expressions requires 3 elements
-	if (cnd_stack.length < 3) {
+	if (stack.length < 3) {
 		return false;
 	}
 	// Extract last operands and operator and execute it
-	var i = cnd_stack.length - 3;
-	var result = cnd_parse(cnd_stack.slice(i, i + 3));
+	var i = stack.length - 3;
+	var result = cnd_parse(stack.slice(i, i + 3));
 	if (result != null) {
 		// Replace the chunk by the result
-		cnd_stack.splice(i, 3, result);
+		stack.splice(i, 3, result);
 		return true;
 	}
 	return false;
