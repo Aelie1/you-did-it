@@ -45,6 +45,14 @@ function removeItem(location, item) {
 	}
 }
 
+/** Check if an item is present in inventory. */
+function hasItem(location, item) {
+	if (location in inventory && inventory[location] == item) {
+		return true;
+	}
+	return false;
+}
+
 /** Add an item to available ones. */
 function addObject(item) {
 	// Add object if not already in list
@@ -68,6 +76,16 @@ function removeObject(item) {
 			return;
 		}
 	}
+}
+
+/** Check if an item is discovered */
+function hasObject(item) {
+	for (var i = 0; i < objects.length; i++) {
+		if (objects[i] == item) {
+			return true;
+		}
+	}
+	return false;
 }
 
 /** Assign a value to a custom variable. */

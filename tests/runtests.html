@@ -29,6 +29,7 @@
 		<script type="text/javascript" src="../core/gui.js"></script>
 		<script type="text/javascript" src="../core/engine.js"></script>
 		<script type="text/javascript">
+			// TODO: must reset global vars after each test
 			function expect(code, result, title) {
 				if (code == result) {
 					jQuery("body").append("<p class=\"ok\">OK: " + title + "</p>\n");
@@ -46,6 +47,14 @@
 				setVar("test", "value");
 				return cnd_processIf(["test", "is", "other value"]);
 			}
+			function invTestOk() {
+				setItem("pocket", "something");
+				return cnd_processIf(["something", "is in", "pocket"]);
+			}
+			function itmTestOk() {
+				addObject("something");
+				return cnd_processIf(["something", "is in", "items"]);
+			}
 			
 			jQuery().ready(function() {
 				jQuery("body").append("<p>Starting tests</p>");
@@ -58,6 +67,10 @@
 				expect(cnd_processIf([[true, 'or', false], 'and', [false, 'or', null]]), null, "Subcond syntax errror");
 				expect(varTestOk(), true, "Var test ok");
 				expect(varTestNok(), false, "Var test nok");
+				expect(cnd_processIf(["something", "is in", "pocket"]), false, "Empty inventory");
+				expect(invTestOk(), true, "Inventory set");
+				expect(cnd_processIf(["somethin", "is in", "items"]), false, "Empty items");
+				expect(itmTestOk(), true, "Item set");
 				jQuery("body").append("<p>Tests finished</p>");
 			});
 		</script>

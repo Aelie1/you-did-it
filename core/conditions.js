@@ -67,7 +67,8 @@ function cnd_processIf(data) {
 /** Check if an element is a keyword or a variable. */
 function cnd_isKeyword(element) {
 	return element == CND_OR || element == CND_AND || element == CND_IN
-			|| element == CND_IN2 || element == CND_ITEMS
+			|| element == CND_IN2 || element == CND_NOT_IN
+			|| element == CND_NOT_IN2 || element == CND_ITEMS
 			|| element == CND_IS || element == CND_IS_NOT;
 }
 
@@ -105,6 +106,10 @@ function cnd_parse(data) {
 		return cnd_parseIs(data[0], data[2]);
 	} else if (operand == CND_IS_NOT) {
 		return cnd_parseIsNot(data[0], data[2]);
+	} else if (operand == CND_IN || operand == CND_IN2) {
+		return cnd_parseIsIn(data[0], data[2]);
+	} else if (operand == CND_NOT_IN || operand == CND_NOT_IN2) {
+		return cnd_parseIsNotIn(data[0], data[2]);
 	}
 	return null;
 }
@@ -131,4 +136,20 @@ function cnd_parseIs(elem1, elem2) {
 
 function cnd_parseIsNot(elem1, elem2) {
 	return getVar(elem1) != elem2;
+}
+
+function cnd_parseIsIn(elem1, elem2) {
+	if (elem2 == CND_ITEMS) {
+		return hasObject(elem1);
+	} else {
+		return hasItem(elem2, elem1);
+	}
+}
+
+function cnd_parseIsNotIn(elem1, elem2) {
+	if (elem2 == CND_ITEMS) {
+		return !hasObject(elem1);
+	} else {
+		return !hasItem(elem2, elem1);
+	}
 }
