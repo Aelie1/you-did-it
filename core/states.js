@@ -47,7 +47,7 @@ function game_over(end_index) {
 		var pictHtml = "<img src=\"./games/" + escUrl(game) + "/" + escUrl(state['picture']) + "\" />";
 		// If big picture available, link to it on click
 		if ('big_picture' in state) {
-			html = "<a href=\"./games/" + escUrl(game) + "/" + escUrl(state['big_picture']) + "\">" + pictHtml + "</a>";
+			html = "<a href=\"./games/" + escUrl(game) + "/" + escUrl(state['big_picture']) + "\" target=\"_blank\">" + pictHtml + "</a>";
 		} else {
 			html = pictHtml;
 		}
@@ -75,7 +75,7 @@ function game_end(end_index) {
 		var pictHtml = "<img src=\"./games/" + escUrl(game) + "/" + escUrl(state['picture']) + "\" />";
 		// If big picture available, link to it on click
 		if ('big_picture' in state) {
-			html = "<a href=\"./games/" + escUrl(game) + "/" + escUrl(state['big_picture']) + "\">" + pictHtml + "</a>";
+			html = "<a href=\"./games/" + escUrl(game) + "/" + escUrl(state['big_picture']) + "\" target=\"_blank\">" + pictHtml + "</a>";
 		} else {
 			html = pictHtml;
 		}
