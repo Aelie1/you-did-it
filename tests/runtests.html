@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!-- You DID it!
+ * 
+ * This file is part of You DID it!
+ * 
+ * You DID it! is licenced under public domain and or CC-0
+ * See http://creativecommons.org/publicdomain/zero/1.0/
+ * 
+ * You DID it! uses jQuery, licenced by the jQuery Fundation
+ * under the MIT Licence (see https://jquery.org/license/)
+ *
+ * Please notice that only the game engine is in public domain.
+ * Game data (pictures, stories, texts and more) are subject to their
+ * own licence which may differ.
+-->
+<html dir="ltr" lang="en-US">
+	<head>
+		<meta charset="UTF-8" />
+		<title>You DID it!</title>
+		<script type="text/javascript" src="../core/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="../core/language.js"></script>
+		<script type="text/javascript" src="../core/tools.js"></script>
+		<script type="text/javascript" src="../core/i18n.js"></script>
+		<script type="text/javascript" src="../core/items.js"></script>
+		<script type="text/javascript" src="../core/states.js"></script>
+		<script type="text/javascript" src="../core/conditions.js"></script>
+		<script type="text/javascript" src="../core/actions.js"></script>
+		<script type="text/javascript" src="../core/results.js"></script>
+		<script type="text/javascript" src="../core/gui.js"></script>
+		<script type="text/javascript" src="../core/engine.js"></script>
+		<script type="text/javascript">
+			function expect(code, result, title) {
+				if (code == result) {
+					jQuery("body").append("<p class=\"ok\">OK: " + title + "</p>\n");
+				} else {
+					jQuery("body").append("<p class=\"nok\">FAILED: "
+							+ title + " - " + JSON.stringify(code) + "</p>\n");
+				}
+			}
+			jQuery().ready(function() {
+				jQuery("body").append("<p>Starting tests</p>");
+				expect(cnd_processIf([true, 'and', true]), true, "True and true");
+				expect(cnd_processIf([false, 'and', true]), false, "False and true");
+				expect(cnd_processIf([false, 'or', true]), true, "False or true");
+				expect(cnd_processIf([true, 'or', false]), true, "True or false");
+				expect(cnd_processIf([false, 'and', true, 'or']), null, "Syntax error");
+				jQuery("body").append("<p>Tests finished</p>");
+			});
+		</script>
+		<style type="text/css">
+			p {
+				margin-top: 0px;
+				margin-bottom: 0px;
+			}
+			.ok {
+				color: #080;
+			}
+			.nok {
+				color: #f00;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+	</body>
+</html>
