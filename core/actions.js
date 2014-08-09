@@ -62,7 +62,8 @@ function targetPicked(target_code) {
 		for (var i = 0; i < targets_picked.length; i++) {
 			selected_action.push(targets_picked[i]);
 		}
-		var my_action = null;
+		var catchedAction = null;
+		var proceedElse = false;
 		for (var i = 0; i < actions.length; i++) {
 			// Check if action is the same length as current action
 			var action = actions[i]['action'];
@@ -79,14 +80,29 @@ function targetPicked(target_code) {
 				}
 			}
 			if (ok == 1) {
-				my_action = actions[i];
+				// Check if conditions are met or else is present
+				if ('if' in actions[i]) {
+					if (cnd_processIf(actions[i]['if'])) {
+						catchedAction = actions[i];
+						proceedElse = false;
+					} else {
+						// If there's an else pick it
+						if ('else' in actions[i]) {
+							catchedAction = actions[i];
+							proceedElse = true;
+						}
+					}
+				} else {
+					// No condition, pick action
+					catchedAction = actions[i];
+				}
 				break;
 			}
 		}
 		// If action is fully selected or action found, show result
 		if (action_picked['targets'] == targets_picked.length
-				|| my_action != null) {
-			proceedAction(my_action);
+				|| catchedAction != null) {
+			proceedAction(catchedAction, proceedElse);
 		} else {
 			updateNotification();
 		}
@@ -99,7 +115,11 @@ function inventoryPicked(location) {
 }
 
 /** Proceed an action result. If null show default impossible action. */
-function proceedAction(action) {
+function proceedAction(action, proceedElse) {
+	switch (arguments.length) {
+	case 1:
+		proceedElse = false;
+	}
 	// Reset action command and update
 	// (action_picked still holds the latest action)
 	action_state = PICK_ACTION;
@@ -110,16 +130,20 @@ function proceedAction(action) {
 		// TODO: move this in result parser
 		showTextResult(translate("_you_cant_do_that"));
 		if ('hint_count' in action_picked) {
-			badAction(action_picked['hint_count']);
+			badAction(action['hint_count']);
 		} else {
 			badAction();
 		}
 		return;
 	}
 	// Proceed transition if any
-	if (!proceedResult(action['result'])) {
-		if ('hint_count' in action_picked) {
-			badAction(action_picked['hint_count']);
+	var result = action['result'];
+	if (proceedElse) {
+		result = action['else'];
+	}
+	if (!proceedResult(result)) {
+		if ('hint_count' in action) {
+			badAction(action['hint_count']);
 		} else {
 			badAction();
 		}
