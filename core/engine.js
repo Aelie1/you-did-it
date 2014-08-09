@@ -74,24 +74,3 @@ function setupObjects() {
 		addObject(starting_objects[i]);
 	}
 }
-
-jQuery().ready(function() {
-	if (!loadGame()) {
-		jQuery("#game-screen").hide();
-		jQuery("#error-screen").html("Game not loaded");
-		jQuery("#error-screen").show();
-		return;
-	}
-	loadI18n();
-	loadAltI18n(_get("lang"));
-	setupUI();
-	if (setupIntro()) {
-		jQuery("#game-screen").hide();
-		jQuery("#intro-screen").show();
-	}
-	setupActions();
-	setupLocations();
-	setupInventory();
-	setupObjects();
-	setState(0);
-});
