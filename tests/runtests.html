@@ -37,6 +37,16 @@
 							+ title + " - " + JSON.stringify(code) + "</p>\n");
 				}
 			}
+			
+			function varTestOk() {
+				setVar("test", "value");
+				return cnd_processIf(["test", "is", "value"]);
+			}
+			function varTestNok() {
+				setVar("test", "value");
+				return cnd_processIf(["test", "is", "other value"]);
+			}
+			
 			jQuery().ready(function() {
 				jQuery("body").append("<p>Starting tests</p>");
 				expect(cnd_processIf([true, 'and', true]), true, "True and true");
@@ -46,6 +56,8 @@
 				expect(cnd_processIf([false, 'and', true, 'or']), null, "Syntax error");
 				expect(cnd_processIf([[true, 'or', false], 'and', [false, 'or', true]]), true, "Subcond");
 				expect(cnd_processIf([[true, 'or', false], 'and', [false, 'or', null]]), null, "Subcond syntax errror");
+				expect(varTestOk(), true, "Var test ok");
+				expect(varTestNok(), false, "Var test nok");
 				jQuery("body").append("<p>Tests finished</p>");
 			});
 		</script>

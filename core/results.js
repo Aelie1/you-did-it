@@ -62,6 +62,13 @@ function proceedResult(result) {
 		}
 		progressed = true;
 	}
+	if ('set' in result) {
+		var varDict = result['set'];
+		for (var variable in varDict) {
+			setVar(variable, varDict[variable]);
+		}
+		progressed = true;
+	}
 	if ('game_over' in result) {
 		game_over(result['game_over']);
 		progressed = true;

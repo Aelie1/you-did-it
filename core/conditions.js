@@ -26,6 +26,8 @@ var CND_IN2 = "in";
 var CND_NOT_IN = "is not in";
 var CND_NOT_IN2 = "not in";
 var CND_ITEMS = "items";
+var CND_IS = "is";
+var CND_IS_NOT = "is not";
 
 /** Process if data.
  * @param data Array of condition elements (if content).
@@ -65,7 +67,8 @@ function cnd_processIf(data) {
 /** Check if an element is a keyword or a variable. */
 function cnd_isKeyword(element) {
 	return element == CND_OR || element == CND_AND || element == CND_IN
-			|| element == CND_IN2 || element == CND_ITEMS;
+			|| element == CND_IN2 || element == CND_ITEMS
+			|| element == CND_IS || element == CND_IS_NOT;
 }
 
 /** Try to read the stack and convert a known expression to a boolean.
@@ -98,6 +101,10 @@ function cnd_parse(data) {
 		return cnd_parseOr(data[0], data[2]);
 	} else if (operand == CND_AND) {
 		return cnd_parseAnd(data[0], data[2]);
+	} else if (operand == CND_IS) {
+		return cnd_parseIs(data[0], data[2]);
+	} else if (operand == CND_IS_NOT) {
+		return cnd_parseIsNot(data[0], data[2]);
 	}
 	return null;
 }
@@ -116,4 +123,12 @@ function cnd_parseAnd(elem1, elem2) {
 		return elem1 && elem2;
 	}
 	return null;
+}
+
+function cnd_parseIs(elem1, elem2) {
+	return getVar(elem1) == elem2;
+}
+
+function cnd_parseIsNot(elem1, elem2) {
+	return getVar(elem1) != elem2;
 }

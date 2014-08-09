@@ -14,9 +14,11 @@
  */
  
 // This file contains items and inventory management functions.
+// And also custom variables
 
 var inventory = {};
 var objects = [];
+var customVars = {};
 
 /** Set an item in given inventory location and update display.
  * @param location The inventory location code.
@@ -65,5 +67,21 @@ function removeObject(item) {
 			objects.splice(i, 1);
 			return;
 		}
+	}
+}
+
+/** Assign a value to a custom variable. */
+function setVar(variable, value) {
+	customVars[variable]= value;
+}
+
+/** Get a custom variable value.
+ * @param variable Variable name.
+ * @return Variable value or null if not defined. */
+function getVar(variable) {
+	if (variable in customVars) {
+		return customVars[variable];
+	} else {
+		return null;
 	}
 }
