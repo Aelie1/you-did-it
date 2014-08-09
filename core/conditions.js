@@ -28,6 +28,8 @@ var CND_NOT_IN2 = "not in";
 var CND_ITEMS = "items";
 var CND_IS = "is";
 var CND_IS_NOT = "is not";
+var CND_TIMES = "times out of";
+var CND_TIMES2 = "of";
 
 /** Process if data.
  * @param data Array of condition elements (if content).
@@ -110,6 +112,8 @@ function cnd_parse(data) {
 		return cnd_parseIsIn(data[0], data[2]);
 	} else if (operand == CND_NOT_IN || operand == CND_NOT_IN2) {
 		return cnd_parseIsNotIn(data[0], data[2]);
+	} else if (operand == CND_TIMES || operand == CND_TIMES2) {
+		return cnd_parseTimes(data[0], data[2]);
 	}
 	return null;
 }
@@ -152,4 +156,14 @@ function cnd_parseIsNotIn(elem1, elem2) {
 	} else {
 		return !hasItem(elem2, elem1);
 	}
+}
+
+function cnd_parseTimes(elem1, elem2) {
+	if (typeof elem1 == "string") {
+		elem1 = parseFloat(elem1);
+	}
+	if (typeof elem2 == "string") {
+		elem2 = parseFloat(elem2);
+	}
+	return (Math.random() * elem2 < elem1);
 }
